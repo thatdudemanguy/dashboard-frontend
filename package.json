@@ -54,6 +54,7 @@
   "author": "dashboard-frontend",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "lit-element": "^2.0.1",
     "lit-html": "^1.0.0",
     "weightless": "0.0.37"

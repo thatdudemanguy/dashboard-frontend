@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit-element';
-import './components/dashboard-grid/dashboard-grid.js'
+import '../card/dashboard-card.js'
+import '../card/card-content-temperature.js'
 
-export class DashboardFrontend extends LitElement {
+export class DashboardCol extends LitElement {
   static get properties() {
     return {
     };
@@ -10,18 +11,16 @@ export class DashboardFrontend extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: flex;
+        min-width: 350px;
       }
     `;
   }
 
   render() {
     return html`
-      <dashboard-grid></dashboard-grid>
+      <slot name="col-content">
+      
+      </slot>
     `;
-  }
-
-  createRenderRoot() {
-    return this;
   }
 }

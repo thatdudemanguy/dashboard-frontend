@@ -8,9 +8,8 @@ import { spacer8, spacer4 } from '../spacing.js';
 export class DashboardCard extends LitElement {
   static get properties() {
     return {
-      title: { type: String },
-      page: { type: String },
       isLoading: { type: Boolean },
+      title: { type: String },
     };
   }
 
@@ -39,11 +38,13 @@ export class DashboardCard extends LitElement {
           <spinner-icon></spinner-icon>
         ` : html`
           <h2 class="card_title">
-              Hey
+              ${this.title}
           </h2>
           <slot name="card-content"></slot>
         `}
       </wl-card>
     `;
   }
+
+  
 }
