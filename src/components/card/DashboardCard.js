@@ -3,13 +3,17 @@ import '../spinner/SpinnerIcon.js'
 import 'weightless/card/card.js'
 
 import { white, black } from '../color.js';
-import { spacer8, spacer4 } from '../spacing.js';
+import { spacer8, spacer4, spacer16, spacer12 } from '../spacing.js';
+import { h2Style, highlightedSpan } from '../fonts.js'
 
 export class DashboardCard extends LitElement {
   static get properties() {
     return {
       isLoading: { type: Boolean },
       title: { type: String },
+      imageSource: { type: String },
+      author: { type: String },
+      linkSource: { type: String },
     };
   }
 
@@ -19,32 +23,57 @@ export class DashboardCard extends LitElement {
   }
 
   static get styles() {
-    return css`
+    return [
+      h2Style,
+      highlightedSpan,
+      css`
       spinner-icon {
         --main-color: ${black};
       }
 
-      wl-card {
-        margin: ${spacer4};
-        padding: ${spacer8};
+      img {
+        object-fit: cover;
+        max-height: 125px;
       }
-    `;
+
+      wl-card {
+        overflow: hidden;
+        margin: ${spacer12};
+      }
+
+      .card_content {
+        padding: ${spacer16};
+      }
+
+      a {
+        text-decoration: none; /* no underline */
+      }
+    `];
   }
 
   render() {
     return html`
-      <wl-card>
-        ${this.isLoading ? html`
+      <a href="${this.linkSource}" target="blank">
+        <wl-card>
+          ${this.isLoading ? html`
           <spinner-icon></spinner-icon>
-        ` : html`
-          <h2 class="card_title">
-              ${this.title}
-          </h2>
-          <slot name="card-content"></slot>
-        `}
-      </wl-card>
+          ` : html`
+          ${this.imageSource ?  html`
+          <img src="${this.imageSource}"/>
+          ` : ''}
+          <div class="card_content">
+            <h2 class="card_title">${this.title}
+              ${this.author ? html`
+              <span>// ${this.author}</span>
+              ` : ''}
+            </h2>
+            <slot name="card-content"></slot>
+          </div>
+          `}
+        </wl-card>
+      </a>
     `;
   }
 
-  
+
 }

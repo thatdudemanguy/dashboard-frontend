@@ -11,7 +11,18 @@ export class DashboardCol extends LitElement {
   static get styles() {
     return css`
       :host {
-        min-width: 350px;
+        width: 350px;
+        height: 100vh;
+        overflow: scroll;
+      }
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      :host::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE and Edge */
+      :host {
+        -ms-overflow-style: none;
       }
     `;
   }

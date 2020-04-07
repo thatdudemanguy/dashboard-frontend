@@ -21,22 +21,13 @@ export class DashboardGrid extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-
     this.getNasaNewsFeed();
   }
 
   render() {
     return html`
       <dashboard-col>
-          <dashboard-card slot="col-content" .title="${this.newsFeedFromNasaData[0].title}">
-            <card-content-news-article slot="card-content" .newsFeedData="${this.newsFeedFromNasaData[0]}"/>
-          </dashboard-card>
-          <dashboard-card slot="col-content">
-            <card-content-temperature slot="card-content"/>
-          </dashboard-card>
-          <dashboard-card slot="col-content">
-            <card-content-temperature slot="card-content"/>
-          </dashboard-card>
+        ${this.newsFeedFromNasaData.map(this._newsArticleMapper)}
       </dashboard-col>
       <dashboard-col>
           <dashboard-card slot="col-content">
@@ -74,6 +65,15 @@ export class DashboardGrid extends LitElement {
     }
 
     this.newsFeedFromNasaData = response.articles;
+    console.log(this.newsFeedFromNasaData);
+  }
+
+  _newsArticleMapper(article) {
+    return html`
+      <dashboard-card slot="col-content" .title="${article.title}" .author="${article.author}" .imageSource="${article.urlToImage}" .linkSource="${article.url}">
+        <card-content-news-article slot="card-content" .newsFeedData="${article}"/>
+      </dashboard-card>
+    `;
   }
 
   _showTechnicalError(e) {

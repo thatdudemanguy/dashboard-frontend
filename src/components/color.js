@@ -8,3 +8,4 @@ export const darkmarine = css`#329d9c`;
 export const appleblueseagreen = css`#56c596`;
 export const lightgreen = css`#7be495`;
 export const pastelgreen = css`#cff4d2`;
+export const highlight = css`#eb5e34`;

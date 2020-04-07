@@ -1,4 +1,5 @@
 import { html, css, LitElement } from 'lit-element';
+import { h2Style, pStyle } from '../fonts.js'
 
 export class CardContentNewsArticle extends LitElement {
   static get properties() {
@@ -8,13 +9,16 @@ export class CardContentNewsArticle extends LitElement {
   }
 
   static get styles() {
-    return css`
-    `;
+    return [
+      pStyle,
+      css`
+      
+    `];
   }
 
   render() {
     return html`
-      <p>${this.newsFeedData.title}</p>
+      <p>${this.newsFeedData.description}</p>
     `;
   }
 }
