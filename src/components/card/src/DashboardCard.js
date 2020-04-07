@@ -48,7 +48,7 @@ export class DashboardCard extends LitElement {
 
       wl-card {
         overflow: hidden;
-        margin: ${spacer12};
+        margin: ${spacer12} 0;
       }
 
       .card_content {

@@ -36,7 +36,7 @@ export class DashboardGrid extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.getRandomMathFunFact();
-    // this.getNasaNewsFeed();
+    this.getNasaNewsFeed();
     this.getRandomGeekJoke();
   }
 
@@ -121,7 +121,8 @@ export class DashboardGrid extends LitElement {
 
   _newsArticleMapper(article) {
     return html`
-      <dashboard-card slot="col-content" .title="${article.title}" .author="${article.author}" .imageSource="${article.urlToImage}" .linkSource="${article.url}">
+      <dashboard-card slot="col-content" .title="${article.title}" .author="${article.author}" 
+        .imageSource="${article.urlToImage}" .linkSource="${article.url}">
         <card-content-news-article slot="card-content" .newsFeedData="${article}"/>
       </dashboard-card>
     `;
