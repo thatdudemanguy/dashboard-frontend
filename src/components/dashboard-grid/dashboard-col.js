@@ -1,2 +1,2 @@
-import { DashboardCol } from './DashboardCol.js';
+import { DashboardCol } from './src/DashboardCol.js';
 customElements.define('dashboard-col', DashboardCol);

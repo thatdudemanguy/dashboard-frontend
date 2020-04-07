@@ -32,7 +32,7 @@ export class DashboardGrid extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.getRandomMathFunFact();
-    //this.getNasaNewsFeed();
+    this.getNasaNewsFeed();
   }
 
   render() {
