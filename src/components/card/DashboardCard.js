@@ -2,6 +2,9 @@ import { LitElement, html, css } from 'lit-element';
 import '../spinner/SpinnerIcon.js'
 import 'weightless/card/card.js'
 
+import { white, black } from '../color.js';
+import { spacer8, spacer4 } from '../spacing.js';
+
 export class DashboardCard extends LitElement {
   static get properties() {
     return {
@@ -19,7 +22,12 @@ export class DashboardCard extends LitElement {
   static get styles() {
     return css`
       spinner-icon {
-        --main-color: red;
+        --main-color: ${black};
+      }
+
+      wl-card {
+        margin: ${spacer4};
+        padding: ${spacer8};
       }
     `;
   }
