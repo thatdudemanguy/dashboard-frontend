@@ -56,7 +56,27 @@ export class DashboardCard extends LitElement {
 
   render() {
     return html`
-      <a href="${this.linkSource}" target="blank">
+      ${this.linkSource ? html`
+        <a href="${this.linkSource}" target="blank">
+          <wl-card>
+            ${this.isLoading ? html`
+              <spinner-icon></spinner-icon>
+            ` : html`
+              ${this.imageSource ?  html`
+              <img src="${this.imageSource}"/>
+            ` : ''}
+              <div class="card_content">
+                <h2 class="card_title">${this.title}
+                  ${this.author ? html`
+                    <span>// ${this.author}</span>
+                  ` : ''}
+                </h2>
+                <slot name="card-content"></slot>
+              </div>
+            `}
+          </wl-card>
+        </a>
+      ` : html`
         <wl-card>
           ${this.isLoading ? html`
             <spinner-icon></spinner-icon>
@@ -67,14 +87,14 @@ export class DashboardCard extends LitElement {
             <div class="card_content">
               <h2 class="card_title">${this.title}
                 ${this.author ? html`
-                <span>// ${this.author}</span>
+                  <span>// ${this.author}</span>
                 ` : ''}
               </h2>
               <slot name="card-content"></slot>
             </div>
           `}
         </wl-card>
-      </a>
+      `}
     `;
   }
 }
