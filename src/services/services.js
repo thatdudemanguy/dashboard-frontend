@@ -1,4 +1,4 @@
-import { newsSource, mathFunFactSource } from './service-sources';
+import { newsSource, mathFunFactSource, geekJoke } from './service-sources';
 import fetcher from './service-fetcher.js';
 
 /**
@@ -24,11 +24,25 @@ async function getRandomMathFunFact() {
     const response = await fetcher.get(mathFunFactSource);
     return response.text();
   } catch (error) {
-    throw new Error(`Unable to get news feed: ${error.message}`);
+    throw new Error(`Unable to fun math fact: ${error.message}`);
+  }
+}
+
+/**
+ * Get a random geek joke
+ * @returns {Promise<Object[]>}
+ */
+async function getGeekJoke() {
+  try {
+    const response = await fetcher.get(geekJoke);
+    return response.json();
+  } catch (error) {
+    throw new Error(`Unable to get geek joke: ${error.message}`);
   }
 }
 
 export default {
   getNewsFeedByQuestion,
   getRandomMathFunFact,
+  getGeekJoke,
 }

@@ -10,6 +10,7 @@ export class DashboardCard extends LitElement {
   static get properties() {
     return {
       isLoading: { type: Boolean },
+      isError: { type: Boolean },
       title: { type: String },
       imageSource: { type: String },
       author: { type: String },
@@ -21,6 +22,7 @@ export class DashboardCard extends LitElement {
     super();
     // is the data still loading? 
     this.isLoading = false;
+    this.isError = false;
   }
 
   static get styles() {
@@ -34,7 +36,12 @@ export class DashboardCard extends LitElement {
         --main-color: ${highlight};
       }
 
-      img {
+      img.error {
+        align-self: center;
+        max-width: 60px;
+      }
+
+      img.header_image {
         object-fit: cover;
         max-height: 125px;
       }
@@ -59,12 +66,15 @@ export class DashboardCard extends LitElement {
       ${this.linkSource ? html`
         <a href="${this.linkSource}" target="blank">
           <wl-card>
-            ${this.isLoading ? html`
+            ${this.isError ? html`
+              <img class="error" src="../../../images/icons8-sad-cloud-80.png"/>
+            ` : 
+            this.isLoading ? html`
               <spinner-icon></spinner-icon>
             ` : html`
               ${this.imageSource ?  html`
-              <img src="${this.imageSource}"/>
-            ` : ''}
+                <img class="header_image" src="${this.imageSource}"/>
+              ` : ''}
               <div class="card_content">
                 <h2 class="card_title">${this.title}
                   ${this.author ? html`
@@ -78,12 +88,15 @@ export class DashboardCard extends LitElement {
         </a>
       ` : html`
         <wl-card>
-          ${this.isLoading ? html`
+          ${this.isError ? html`
+            <img class="error" src="../../../images/icons8-sad-cloud-80.png"/>
+          ` : 
+          this.isLoading ? html`
             <spinner-icon></spinner-icon>
           ` : html`
             ${this.imageSource ?  html`
-            <img src="${this.imageSource}"/>
-          ` : ''}
+              <img class="header_image" src="${this.imageSource}"/>
+            ` : ''}
             <div class="card_content">
               <h2 class="card_title">${this.title}
                 ${this.author ? html`

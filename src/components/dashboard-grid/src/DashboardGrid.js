@@ -4,6 +4,7 @@ import '../dashboard-col.js'
 import '../../card/dashboard-card.js'
 import '../../card/card-content-news-article.js'
 import '../../card/card-content-temperature.js'
+import '../../card/card-content-quote.js'
 import '../../card/card-content-fun-fact.js'
 
 import services from '../../../services/services.js'
@@ -13,6 +14,9 @@ export class DashboardGrid extends LitElement {
     return {
       newsFeedFromNasaData: { type: Array },
       randomMathFunFact: { type: String },
+      randomGeekJoke: { type: String },
+      funFactsError: { type: Boolean },
+      randomGeekJokeError: { type: Boolean },
     };
   }
 
@@ -32,7 +36,8 @@ export class DashboardGrid extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.getRandomMathFunFact();
-    this.getNasaNewsFeed();
+    // this.getNasaNewsFeed();
+    this.getRandomGeekJoke();
   }
 
   render() {
@@ -41,8 +46,11 @@ export class DashboardGrid extends LitElement {
         ${this.newsFeedFromNasaData.map(this._newsArticleMapper)}
       </dashboard-col>
       <dashboard-col>
-        <dashboard-card slot="col-content" title="Fun facts" .isLoading="${!this.randomMathFunFact}">
-          <card-content-fun-fact slot="card-content" .funFact="${this.randomMathFunFact}"/>
+        <dashboard-card slot="col-content" .isError="${this.funFactsError}" .isLoading="${!this.randomMathFunFact}">
+          <card-content-fun-fact slot="card-content" .funFact="${this.randomMathFunFact}"></card-content-fun-fact>
+        </dashboard-card>
+        <dashboard-card slot="col-content" .isError="${this.randomGeekJokeError}" .isLoading="${!this.randomGeekJoke}">
+          <card-content-quote slot="card-content" .quote="${this.randomGeekJoke}"></card-content-quote>
         </dashboard-card>
       </dashboard-col>
     `;
@@ -68,6 +76,16 @@ export class DashboardGrid extends LitElement {
     });
   }
 
+  async getRandomGeekJoke() {
+    await new Promise((resolve) => {
+      resolve(services.getGeekJoke());
+    }).then((response) => {
+      this._handleGeekJoke(response);
+    }).catch((e) => {
+      this._showTechnicalError(e);
+    });
+  }
+
   _handleNewsFeedFromNasa(response) {
     if (this._checkIntegrity(response) && !response.articles) {
       throw new Error('bad newsfeed data from nasa');
@@ -79,10 +97,19 @@ export class DashboardGrid extends LitElement {
 
   _handleRandomMathFunFact(response) {
     if (!response) {
+      this.funFactsError = true;
+      throw new Error('bad data from maths fun fact');
+    }
+    this.randomMathFunFact = response;
+  }
+
+  _handleGeekJoke(response) {
+    if (!response) {
+      this.randomGeekJokeError = true;
       throw new Error('bad data from maths fun fact');
     }
 
-    this.randomMathFunFact = response;
+    this.randomGeekJoke = response;
   }
 
   _checkIntegrity(response) {
