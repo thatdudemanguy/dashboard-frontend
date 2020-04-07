@@ -1,10 +1,10 @@
 import { html, css, LitElement } from 'lit-element';
 import { h2Style, pStyle, highlightedSpan } from '../fonts.js'
 
-export class CardContentNewsArticle extends LitElement {
+export class CardContentFunFact extends LitElement {
   static get properties() {
     return {
-      newsFeedData: { type: Object },
+      funFact: { type: String },
     };
   }
 
@@ -19,7 +19,7 @@ export class CardContentNewsArticle extends LitElement {
 
   render() {
     return html`
-      <p>${this.newsFeedData.description} <span>${this.newsFeedData.publishedAt.substring(0, 10)}</span></p>
+      <p>${this.funFact}</p>
     `;
   }
 }

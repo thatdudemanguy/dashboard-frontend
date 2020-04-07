@@ -1,8 +1,8 @@
 import { LitElement, html, css } from 'lit-element';
-import '../spinner/SpinnerIcon.js'
+import '../spinner/spinner-icon.js'
 import 'weightless/card/card.js'
 
-import { white, black } from '../color.js';
+import { white, black, highlight } from '../color.js';
 import { spacer8, spacer4, spacer16, spacer12 } from '../spacing.js';
 import { h2Style, highlightedSpan } from '../fonts.js'
 
@@ -19,6 +19,7 @@ export class DashboardCard extends LitElement {
 
   constructor() {
     super();
+    // is the data still loading? 
     this.isLoading = false;
   }
 
@@ -27,8 +28,10 @@ export class DashboardCard extends LitElement {
       h2Style,
       highlightedSpan,
       css`
+
       spinner-icon {
-        --main-color: ${black};
+        text-align: center;
+        --main-color: ${highlight};
       }
 
       img {
@@ -56,24 +59,22 @@ export class DashboardCard extends LitElement {
       <a href="${this.linkSource}" target="blank">
         <wl-card>
           ${this.isLoading ? html`
-          <spinner-icon></spinner-icon>
+            <spinner-icon></spinner-icon>
           ` : html`
-          ${this.imageSource ?  html`
-          <img src="${this.imageSource}"/>
+            ${this.imageSource ?  html`
+            <img src="${this.imageSource}"/>
           ` : ''}
-          <div class="card_content">
-            <h2 class="card_title">${this.title}
-              ${this.author ? html`
-              <span>// ${this.author}</span>
-              ` : ''}
-            </h2>
-            <slot name="card-content"></slot>
-          </div>
+            <div class="card_content">
+              <h2 class="card_title">${this.title}
+                ${this.author ? html`
+                <span>// ${this.author}</span>
+                ` : ''}
+              </h2>
+              <slot name="card-content"></slot>
+            </div>
           `}
         </wl-card>
       </a>
     `;
   }
-
-
 }

@@ -11,8 +11,9 @@ export class SpinnerIcon extends LitElement {
       :root {
         --main-color: black;
       }
-
+      
       .lds-ripple {
+        transform: scale(0.5);
         display: inline-block;
         position: relative;
         width: 80px;
