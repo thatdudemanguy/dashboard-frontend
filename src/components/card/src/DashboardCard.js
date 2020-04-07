@@ -1,10 +1,10 @@
 import { LitElement, html, css } from 'lit-element';
-import '../spinner/spinner-icon.js'
+import '../../spinner/spinner-icon.js'
 import 'weightless/card/card.js'
 
-import { white, black, highlight } from '../color.js';
-import { spacer8, spacer4, spacer16, spacer12 } from '../spacing.js';
-import { h2Style, highlightedSpan } from '../fonts.js'
+import { white, black, highlight } from '../../syle/color.js';
+import { spacer8, spacer4, spacer16, spacer12 } from '../../syle/spacing.js';
+import { h2Style, highlightedSpan } from '../../syle/fonts.js'
 
 export class DashboardCard extends LitElement {
   static get properties() {

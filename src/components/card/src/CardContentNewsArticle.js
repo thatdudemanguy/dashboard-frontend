@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit-element';
-import { h2Style, pStyle, highlightedSpan } from '../fonts.js'
+import { h2Style, pStyle, highlightedSpan } from '../../syle/fonts.js'
 
 export class CardContentNewsArticle extends LitElement {
   static get properties() {

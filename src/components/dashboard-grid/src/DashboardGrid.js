@@ -1,12 +1,12 @@
 import { LitElement, html, css } from 'lit-element';
-import './dashboard-col.js'
+import '../dashboard-col.js'
 
-import '../card/dashboard-card.js'
-import '../card/card-content-news-article.js'
-import '../card/card-content-temperature.js'
-import '../card/card-content-fun-fact.js'
+import '../../card/dashboard-card.js'
+import '../../card/card-content-news-article.js'
+import '../../card/card-content-temperature.js'
+import '../../card/card-content-fun-fact.js'
 
-import services from '../../services/services.js'
+import services from '../../../services/services.js'
 
 export class DashboardGrid extends LitElement {
   static get properties() {
