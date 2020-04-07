@@ -15,7 +15,11 @@ export class DashboardGrid extends LitElement {
       newsFeedFromNasaData: { type: Array },
       randomMathFunFact: { type: String },
       randomGeekJoke: { type: String },
+      earthWeatherData: { type: Object },
+      marsWeatherData: { type: Object },
       funFactsError: { type: Boolean },
+      earthWeatherError: { type: Boolean },
+      marsWeatherError: { type: Boolean },
       randomGeekJokeError: { type: Boolean },
     };
   }
@@ -36,12 +40,20 @@ export class DashboardGrid extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.getRandomMathFunFact();
-    this.getNasaNewsFeed();
+    // this.getNasaNewsFeed();
     this.getRandomGeekJoke();
+    //this.getEarthWeather();
+    this.getMarsWeather();
   }
 
   render() {
     return html`
+      <dashboard-col>
+        <dashboard-card slot="col-content" .isError="${this.weatherOnMarsError}" .isLoading="${!this.marsWeatherData}">
+          <!-- <card-content-temperature slot="card-content" .weatherData=${this.earthWeatherData}></card-content-temperature> -->
+          <card-content-temperature slot="card-content" .weatherData=${this.marsWeatherData}></card-content-temperature>
+        </dashboard-card>
+      </dashboard-col>
       <dashboard-col>
         ${this.newsFeedFromNasaData.map(this._newsArticleMapper)}
       </dashboard-col>
@@ -86,13 +98,32 @@ export class DashboardGrid extends LitElement {
     });
   }
 
+  async getEarthWeather() {
+    await new Promise((resolve) => {
+      resolve(services.getEarthWeather());
+    }).then((response) => {
+      this._handleEarthWeather(response);
+    }).catch((e) => {
+      this._showTechnicalError(e);
+    });
+  }
+  
+  async getMarsWeather() {
+    await new Promise((resolve) => {
+      resolve(services.getMarsWeather());
+    }).then((response) => {
+      this._handleMarsWeather(response);
+    }).catch((e) => {
+      this._showTechnicalError(e);
+    });
+  }
+
   _handleNewsFeedFromNasa(response) {
     if (this._checkIntegrity(response) && !response.articles) {
       throw new Error('bad newsfeed data from nasa');
     }
 
     this.newsFeedFromNasaData = response.articles;
-    // console.log(this.newsFeedFromNasaData);
   }
 
   _handleRandomMathFunFact(response) {
@@ -100,6 +131,7 @@ export class DashboardGrid extends LitElement {
       this.funFactsError = true;
       throw new Error('bad data from maths fun fact');
     }
+    
     this.randomMathFunFact = response;
   }
 
@@ -110,6 +142,24 @@ export class DashboardGrid extends LitElement {
     }
 
     this.randomGeekJoke = response;
+  }
+
+  _handleEarthWeather(response) {
+    if (this._checkIntegrity(response) && !response) {
+      this.earthWeatherError = true;
+      throw new Error('bad data from Earth weather');
+    }
+
+    this.earthWeatherData = response;
+  }
+
+  _handleMarsWeather(response) {
+    if (this._checkIntegrity(response) && !response) {
+      this.marsWeatherError = true;
+      throw new Error('bad data from Mars weather');
+    }
+    const lastSOL = response.sol_keys[response.sol_keys.length - 1];
+    this.marsWeatherData = response[lastSOL];
   }
 
   _checkIntegrity(response) {
