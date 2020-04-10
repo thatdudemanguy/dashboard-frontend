@@ -40,7 +40,7 @@ export class DashboardGrid extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.getRandomMathFunFact();
-    // this.getNasaNewsFeed();
+    this.getNasaNewsFeed();
     this.getRandomGeekJoke();
     //this.getEarthWeather();
     this.getMarsWeather();
@@ -49,7 +49,7 @@ export class DashboardGrid extends LitElement {
   render() {
     return html`
       <dashboard-col>
-        <dashboard-card slot="col-content" .isError="${this.weatherOnMarsError}" .isLoading="${!this.marsWeatherData}">
+        <dashboard-card slot="col-content" .title="Weather on Mars, sol ${this.marsWeatherData.lastSOL} (UTC: ${this.marsWeatherData.First_UTC.substring(0, 10)})" .isError="${this.weatherOnMarsError}" .isLoading="${!this.marsWeatherData}">
           <!-- <card-content-temperature slot="card-content" .weatherData=${this.earthWeatherData}></card-content-temperature> -->
           <card-content-temperature slot="card-content" .weatherData=${this.marsWeatherData}></card-content-temperature>
         </dashboard-card>
@@ -160,6 +160,7 @@ export class DashboardGrid extends LitElement {
     }
     const lastSOL = response.sol_keys[response.sol_keys.length - 1];
     this.marsWeatherData = response[lastSOL];
+    this.marsWeatherData.lastSOL = lastSOL;
   }
 
   _checkIntegrity(response) {
