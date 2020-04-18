@@ -39,11 +39,11 @@ export class DashboardGrid extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // this.getRandomMathFunFact();
     this.getNasaNewsFeed();
-    // this.getRandomGeekJoke();
-    // this.getEarthWeather();
-    // this.getMarsWeather();
+    this.getRandomMathFunFact();
+    this.getRandomGeekJoke();
+    this.getEarthWeather();
+    this.getMarsWeather();
   }
 
   render() {
@@ -123,6 +123,7 @@ export class DashboardGrid extends LitElement {
       throw new Error('bad newsfeed data from nasa');
     }
 
+    console.log(response.articles);
     this.newsFeedFromNasaData = response.articles;
   }
 

@@ -1,5 +1,4 @@
 import fetcher from './service-fetcher.js';
-
 const PREFIX = 'api/v1/'
 
 /**
@@ -9,7 +8,7 @@ const PREFIX = 'api/v1/'
  */
 async function getNewsFeedByQuestion(question) {
   try {
-    const response = await fetcher.get(`/api/v1/fact/`);
+    const response = await fetcher.get(`${PREFIX}news/${question}`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get news feed: ${error.message}`);
@@ -22,7 +21,7 @@ async function getNewsFeedByQuestion(question) {
  */
 async function getRandomMathFunFact() {
   try {
-    const response = await fetcher.get(`${PREFIX}fact`);
+    const response = await fetcher.get(`${PREFIX}fact/`);
     return response.text();
   } catch (error) {
     throw new Error(`Unable to fun math fact: ${error.message}`);
@@ -35,7 +34,7 @@ async function getRandomMathFunFact() {
  */
 async function getGeekJoke() {
   try {
-    const response = await fetcher.get(`${PREFIX}joke`);
+    const response = await fetcher.get(`${PREFIX}joke/`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get geek joke: ${error.message}`);
@@ -48,7 +47,7 @@ async function getGeekJoke() {
  */
 async function getEarthWeather() {
   try {
-    const response = await fetcher.get(`${PREFIX}weather`);
+    const response = await fetcher.get(`${PREFIX}weather/`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get weather on Earth: ${error.message}`);
@@ -61,7 +60,7 @@ async function getEarthWeather() {
  */
 async function getMarsWeather() {
   try {
-    const response = await fetcher.get(`${PREFIX}nasa`);
+    const response = await fetcher.get(`${PREFIX}nasa/`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get weather on Mars: ${error.message}`);
