@@ -1,5 +1,6 @@
-import { newsSource, mathFunFactSource, geekJokeSource, earthWeatherSource, marsWeatherSource } from './service-sources';
 import fetcher from './service-fetcher.js';
+
+const PREFIX = 'api/v1/'
 
 /**
  * Get news feed by added question
@@ -8,7 +9,7 @@ import fetcher from './service-fetcher.js';
  */
 async function getNewsFeedByQuestion(question) {
   try {
-    const response = await fetcher.get(`${newsSource}?q=${question}&apiKey=eecb3622f7804addb79c2f2c3864e655`);
+    const response = await fetcher.get(`/api/v1/fact/`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get news feed: ${error.message}`);
@@ -21,7 +22,7 @@ async function getNewsFeedByQuestion(question) {
  */
 async function getRandomMathFunFact() {
   try {
-    const response = await fetcher.get(mathFunFactSource);
+    const response = await fetcher.get(`${PREFIX}fact`);
     return response.text();
   } catch (error) {
     throw new Error(`Unable to fun math fact: ${error.message}`);
@@ -34,7 +35,7 @@ async function getRandomMathFunFact() {
  */
 async function getGeekJoke() {
   try {
-    const response = await fetcher.get(geekJokeSource);
+    const response = await fetcher.get(`${PREFIX}joke`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get geek joke: ${error.message}`);
@@ -47,7 +48,7 @@ async function getGeekJoke() {
  */
 async function getEarthWeather() {
   try {
-    const response = await fetcher.get(`${earthWeatherSource}7bcf1845ba9946bfb3e1df8dc02050f0`);
+    const response = await fetcher.get(`${PREFIX}weather`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get weather on Earth: ${error.message}`);
@@ -60,7 +61,7 @@ async function getEarthWeather() {
  */
 async function getMarsWeather() {
   try {
-    const response = await fetcher.get(`${marsWeatherSource}dyBPGViZoRvR2OvEojbPnAHBynlWMkDEaRqpBEcd`);
+    const response = await fetcher.get(`${PREFIX}nasa`);
     return response.json();
   } catch (error) {
     throw new Error(`Unable to get weather on Mars: ${error.message}`);
