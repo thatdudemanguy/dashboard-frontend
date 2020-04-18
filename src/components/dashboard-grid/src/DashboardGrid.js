@@ -6,7 +6,11 @@ import '../../card/card-content-news-article.js'
 import '../../card/card-content-temperature.js'
 import '../../card/card-content-quote.js'
 import '../../card/card-content-fun-fact.js'
-
+import '@lion/input/lion-input.js';
+import '@lion/button/lion-button.js';
+import '@lion/form/lion-form.js';
+import 'weightless/textfield/textfield.js'
+import 'weightless/button/button.js'
 import services from '../../../services/services.js'
 
 export class DashboardGrid extends LitElement {
@@ -17,10 +21,13 @@ export class DashboardGrid extends LitElement {
       randomGeekJoke: { type: String },
       earthWeatherData: { type: Object },
       marsWeatherData: { type: Object },
+      timetrackerData: { type: Object },
+      userInput: { type: Object },
       funFactsError: { type: Boolean },
       earthWeatherError: { type: Boolean },
       marsWeatherError: { type: Boolean },
       randomGeekJokeError: { type: Boolean },
+      timetrackerError: { type: Boolean },
     };
   }
 
@@ -35,22 +42,41 @@ export class DashboardGrid extends LitElement {
   constructor() {
     super();
     this.newsFeedFromNasaData = [];
+    this.marsWeatherData = { First_UTC: '' };
+    this.userInput = {
+      title: '',
+      description: '',
+    }
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.getNasaNewsFeed();
-    this.getRandomMathFunFact();
-    this.getRandomGeekJoke();
-    this.getEarthWeather();
-    this.getMarsWeather();
+    // this.getNasaNewsFeed();
+    // this.getRandomMathFunFact();
+    // this.getRandomGeekJoke();
+    // this.getEarthWeather();
+    // this.getMarsWeather();
+
+    this.getTimetracker();
   }
 
   render() {
     return html`
       <dashboard-col>
+        <dashboard-card slot="col-content">
+        <lion-form id="form" slot="card-content" @submit="${this.submit}">
+          <form>
+            <wl-textfield @input="${e => this.userInput.title = e.target.value}" label="Titel"></wl-textfield>
+            <wl-textfield @input="${e => this.userInput.description = e.target.value}" label="Description"></wl-textfield>
+            <wl-button @click="${e => console.log('clicked/spaced/entered', e)}">Add</wl-button>
+          </form>
+        </lion-form>
+
+        </dashboard-card>
+        ${this.timetrackerData.map(this._timetrackerMapper)}
+      </dashboard-col>
+      <dashboard-col>
         <dashboard-card slot="col-content" .title="Weather on Mars, sol ${this.marsWeatherData.lastSOL} (UTC: ${this.marsWeatherData.First_UTC.substring(0, 10)})" .isError="${this.weatherOnMarsError}" .isLoading="${!this.marsWeatherData}">
-          <!-- <card-content-temperature slot="card-content" .weatherData=${this.earthWeatherData}></card-content-temperature> -->
           <card-content-temperature slot="card-content" .weatherData=${this.marsWeatherData}></card-content-temperature>
         </dashboard-card>
       </dashboard-col>
@@ -65,8 +91,10 @@ export class DashboardGrid extends LitElement {
           <card-content-quote slot="card-content" .quote="${this.randomGeekJoke}"></card-content-quote>
         </dashboard-card>
       </dashboard-col>
+      
     `;
   }
+
 
   async getNasaNewsFeed() {
     await new Promise((resolve) => {
@@ -107,12 +135,22 @@ export class DashboardGrid extends LitElement {
       this._showTechnicalError(e);
     });
   }
-  
+
   async getMarsWeather() {
     await new Promise((resolve) => {
       resolve(services.getMarsWeather());
     }).then((response) => {
       this._handleMarsWeather(response);
+    }).catch((e) => {
+      this._showTechnicalError(e);
+    });
+  }
+
+  async getTimetracker() {
+    await new Promise((resolve) => {
+      resolve(services.getTimetracker());
+    }).then((response) => {
+      this._handleTimetracker(response);
     }).catch((e) => {
       this._showTechnicalError(e);
     });
@@ -132,14 +170,14 @@ export class DashboardGrid extends LitElement {
       this.funFactsError = true;
       throw new Error('bad data from maths fun fact');
     }
-    
+
     this.randomMathFunFact = response;
   }
 
   _handleGeekJoke(response) {
     if (!response) {
       this.randomGeekJokeError = true;
-      throw new Error('bad data from maths fun fact');
+      throw new Error('bad data from geek jokes');
     }
 
     this.randomGeekJoke = response;
@@ -151,7 +189,6 @@ export class DashboardGrid extends LitElement {
       throw new Error('bad data from Earth weather');
     }
 
-    console.log(response);
     this.earthWeatherData = response;
   }
 
@@ -163,6 +200,15 @@ export class DashboardGrid extends LitElement {
     const lastSOL = response.sol_keys[response.sol_keys.length - 1];
     this.marsWeatherData = response[lastSOL];
     this.marsWeatherData.lastSOL = lastSOL;
+  }
+
+  _handleTimetracker(response) {
+    if (!response) {
+      this.timetrackerError = true;
+      throw new Error('bad data from time tracker');
+    }
+    console.log(response);
+    this.timetrackerData = response;
   }
 
   _checkIntegrity(response) {
@@ -180,6 +226,28 @@ export class DashboardGrid extends LitElement {
       </dashboard-card>
     `;
   }
+
+  _timetrackerMapper(entry) {
+    return html`
+      <dashboard-card slot="col-content" .title="${entry.title}" .author="${entry.description}"></dashboard-card>
+    `;
+  }
+
+  submit = async () => {
+    const form = this.shadowRoot.querySelector('#form');
+  
+    if (!form.hasFeedbackFor.includes('error')) {
+      await new Promise((resolve) => {
+        resolve(services.postTimetracker(this.userInput));
+      }).then((response) => {
+        const [...oldItems] = this.timetrackerData;
+        this.timetrackerData = [...oldItems, response];
+      }).catch((e) => {
+        this._showTechnicalError(e);
+      });
+    }
+  };
+  
 
   _showTechnicalError(e) {
     console.error(e);

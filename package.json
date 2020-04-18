@@ -56,6 +56,9 @@
   "author": "dashboard-frontend",
   "license": "MIT",
   "dependencies": {
+    "@lion/button": "^0.5.11",
+    "@lion/form": "^0.4.22",
+    "@lion/input": "^0.5.21",
     "axios": "^0.19.2",
     "lit-element": "^2.0.1",
     "lit-html": "^1.0.0",

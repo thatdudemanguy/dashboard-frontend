@@ -3,7 +3,7 @@ const PREFIX = 'api/v1/'
 
 /**
  * Get news feed by added question
- * @param question word containt the subject e.g.: nasa
+ * @param question word containing the subject e.g.: nasa
  * @returns {Promise<Object[]>}
  */
 async function getNewsFeedByQuestion(question) {
@@ -67,10 +67,52 @@ async function getMarsWeather() {
   }
 }
 
+/**
+ * Gets all timetracks
+ * @returns {Promise<Object[]>}
+ */
+async function getTimetracker() {
+  try {
+    const response = await fetcher.get(`${PREFIX}timetracker/`);
+    return response.json();
+  } catch (error) {
+    throw new Error(`Unable to get timetracker data: ${error.message}`);
+  }
+}
+
+/**
+ * Posts given timetrack
+ * @returns {Promise<Object[]>}
+ */
+async function postTimetracker(givenData) {
+  const data = {
+    ...givenData,
+    state: 1,
+    duration: 1000,
+    date: new Date(),
+    tag: null,
+  }
+  
+  // TODO: add other inputs
+
+  try {
+    const response = await fetcher.post(`${PREFIX}timetracker/`, data);
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    throw new Error(`Unable to post: ${error.message}`);
+  }
+}
+
+
+
 export default {
   getNewsFeedByQuestion,
   getRandomMathFunFact,
   getGeekJoke,
   getEarthWeather,
   getMarsWeather,
+  getTimetracker,
+  postTimetracker,
 }

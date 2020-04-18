@@ -1,3 +1,4 @@
+// add status code errors
 const fetcher = {
   get: async(url = '') => {
     const response = await fetch(url);
