@@ -10,8 +10,8 @@ async function getNewsFeedByQuestion(question) {
   try {
     const response = await fetcher.get(`${PREFIX}news/${question}`);
     return response.json();
-  } catch (error) {
-    throw new Error(`Unable to get news feed: ${error.message}`);
+  } catch (e) {
+    throw new Error(`Unable to get news feed: ${e.message}`);
   }
 }
 
@@ -23,8 +23,8 @@ async function getRandomMathFunFact() {
   try {
     const response = await fetcher.get(`${PREFIX}fact/`);
     return response.text();
-  } catch (error) {
-    throw new Error(`Unable to fun math fact: ${error.message}`);
+  } catch (e) {
+    throw new Error(`Unable to fun math fact: ${e.message}`);
   }
 }
 
@@ -36,8 +36,8 @@ async function getGeekJoke() {
   try {
     const response = await fetcher.get(`${PREFIX}joke/`);
     return response.json();
-  } catch (error) {
-    throw new Error(`Unable to get geek joke: ${error.message}`);
+  } catch (e) {
+    throw new Error(`Unable to get geek joke: ${e.message}`);
   }
 }
 
@@ -49,8 +49,8 @@ async function getEarthWeather() {
   try {
     const response = await fetcher.get(`${PREFIX}weather/`);
     return response.json();
-  } catch (error) {
-    throw new Error(`Unable to get weather on Earth: ${error.message}`);
+  } catch (e) {
+    throw new Error(`Unable to get weather on Earth: ${e.message}`);
   }
 }
 
@@ -62,8 +62,8 @@ async function getMarsWeather() {
   try {
     const response = await fetcher.get(`${PREFIX}nasa/`);
     return response.json();
-  } catch (error) {
-    throw new Error(`Unable to get weather on Mars: ${error.message}`);
+  } catch (e) {
+    throw new Error(`Unable to get weather on Mars: ${e.message}`);
   }
 }
 
@@ -75,8 +75,8 @@ async function getTimetracker() {
   try {
     const response = await fetcher.get(`${PREFIX}timetracker/`);
     return response.json();
-  } catch (error) {
-    throw new Error(`Unable to get timetracker data: ${error.message}`);
+  } catch (e) {
+    throw new Error(`Unable to get timetracker data: ${e.message}`);
   }
 }
 
@@ -97,14 +97,27 @@ async function postTimetracker(givenData) {
 
   try {
     const response = await fetcher.post(`${PREFIX}timetracker/`, data);
-
-    console.log(response);
     return response;
-  } catch (error) {
-    throw new Error(`Unable to post: ${error.message}`);
+  } catch (e) {
+    throw new Error(`Unable to post: ${e.message}`);
   }
 }
 
+/**
+ * Patches given timetrack entry with new state
+ * @returns {Promise<Object[]>}
+*/
+
+async function patchTimetrackerEntry(state, id) {
+  try {
+    const obj = {
+      state: state ? 1 : 0,
+    };
+    const response = await fetcher.patch(`${PREFIX}timetracker/${id}`, obj);
+  } catch (e) {
+    throw new Error(`Unable to patch: ${e.message}`)
+  }
+}
 
 
 export default {
@@ -115,4 +128,5 @@ export default {
   getMarsWeather,
   getTimetracker,
   postTimetracker,
+  patchTimetrackerEntry,
 }

@@ -2,15 +2,13 @@ import { LitElement, html, css } from 'lit-element';
 import '../dashboard-col.js'
 
 import '../../card/dashboard-card.js'
+import '../../card/timetrack-card.js'
 import '../../card/card-content-news-article.js'
 import '../../card/card-content-temperature.js'
+import '../../card/card-content-time-form.js'
 import '../../card/card-content-quote.js'
 import '../../card/card-content-fun-fact.js'
-import '@lion/input/lion-input.js';
-import '@lion/button/lion-button.js';
-import '@lion/form/lion-form.js';
-import 'weightless/textfield/textfield.js'
-import 'weightless/button/button.js'
+
 import services from '../../../services/services.js'
 
 export class DashboardGrid extends LitElement {
@@ -21,8 +19,7 @@ export class DashboardGrid extends LitElement {
       randomGeekJoke: { type: String },
       earthWeatherData: { type: Object },
       marsWeatherData: { type: Object },
-      timetrackerData: { type: Object },
-      userInput: { type: Object },
+      timetrackerData: { type: Array },
       funFactsError: { type: Boolean },
       earthWeatherError: { type: Boolean },
       marsWeatherError: { type: Boolean },
@@ -43,10 +40,6 @@ export class DashboardGrid extends LitElement {
     super();
     this.newsFeedFromNasaData = [];
     this.marsWeatherData = { First_UTC: '' };
-    this.userInput = {
-      title: '',
-      description: '',
-    }
   }
 
   connectedCallback() {
@@ -64,14 +57,7 @@ export class DashboardGrid extends LitElement {
     return html`
       <dashboard-col>
         <dashboard-card slot="col-content">
-        <lion-form id="form" slot="card-content" @submit="${this.submit}">
-          <form>
-            <wl-textfield @input="${e => this.userInput.title = e.target.value}" label="Titel"></wl-textfield>
-            <wl-textfield @input="${e => this.userInput.description = e.target.value}" label="Description"></wl-textfield>
-            <wl-button @click="${e => console.log('clicked/spaced/entered', e)}">Add</wl-button>
-          </form>
-        </lion-form>
-
+          <card-content-time-form id="form" slot="card-content"><card-content-time-form>
         </dashboard-card>
         ${this.timetrackerData.map(this._timetrackerMapper)}
       </dashboard-col>
@@ -95,6 +81,10 @@ export class DashboardGrid extends LitElement {
     `;
   }
 
+  firstUpdated() {
+    super.firstUpdated();
+    this.shadowRoot.querySelector('#form').addEventListener('updateTimetrackData', e => { this._updateTimetrackData(e, this) });
+  }
 
   async getNasaNewsFeed() {
     await new Promise((resolve) => {
@@ -161,7 +151,6 @@ export class DashboardGrid extends LitElement {
       throw new Error('bad newsfeed data from nasa');
     }
 
-    console.log(response.articles);
     this.newsFeedFromNasaData = response.articles;
   }
 
@@ -207,7 +196,6 @@ export class DashboardGrid extends LitElement {
       this.timetrackerError = true;
       throw new Error('bad data from time tracker');
     }
-    console.log(response);
     this.timetrackerData = response;
   }
 
@@ -229,25 +217,17 @@ export class DashboardGrid extends LitElement {
 
   _timetrackerMapper(entry) {
     return html`
-      <dashboard-card slot="col-content" .title="${entry.title}" .author="${entry.description}"></dashboard-card>
+      <timetrack-card slot="col-content" .timeData="${entry}"></timetrack-card>
     `;
   }
 
-  submit = async () => {
-    const form = this.shadowRoot.querySelector('#form');
-  
-    if (!form.hasFeedbackFor.includes('error')) {
-      await new Promise((resolve) => {
-        resolve(services.postTimetracker(this.userInput));
-      }).then((response) => {
-        const [...oldItems] = this.timetrackerData;
-        this.timetrackerData = [...oldItems, response];
-      }).catch((e) => {
-        this._showTechnicalError(e);
-      });
-    }
-  };
-  
+  _updateTimetrackData(e, context) {
+    console.log(context);
+    const [...oldItems] = context.timetrackerData;
+    context.timetrackerData = [...oldItems, e.detail];
+
+    console.log(context.timetrackerData);
+  }
 
   _showTechnicalError(e) {
     console.error(e);

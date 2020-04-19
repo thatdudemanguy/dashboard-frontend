@@ -19,7 +19,7 @@ export const pStyle = css`
 `;
 
 export const highlightedSpan = css`
-  span {
+  .card_title span {
     color: ${highlight};
     font-weight: lighter;
     font-size: 0.8em;
