@@ -106,7 +106,6 @@ async function postTimetracker(givenData) {
  * Patches given timetrack entry with new state
  * @returns {Promise<Object[]>}
 */
-
 async function patchTimetrackerEntry(state, id) {
   try {
     const obj = {
@@ -115,6 +114,18 @@ async function patchTimetrackerEntry(state, id) {
     const response = await fetcher.patch(`${PREFIX}timetracker/${id}`, obj);
   } catch (e) {
     throw new Error(`Unable to patch: ${e.message}`)
+  }
+}
+
+/**
+ * Deletes timetrack entry by id
+ * @returns {Promise<Object[]>}
+*/
+async function deleteTimetrackById(id) {
+  try {
+    const response = await fetcher.delete(`${PREFIX}timetracker/${id}`);
+  } catch (e) {
+    throw new Error(`Unable to delete: ${e.message}`)
   }
 }
 
@@ -128,4 +139,5 @@ export default {
   getTimetracker,
   postTimetracker,
   patchTimetrackerEntry,
+  deleteTimetrackById,
 }

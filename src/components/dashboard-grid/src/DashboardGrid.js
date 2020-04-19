@@ -44,12 +44,11 @@ export class DashboardGrid extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // this.getNasaNewsFeed();
-    // this.getRandomMathFunFact();
-    // this.getRandomGeekJoke();
-    // this.getEarthWeather();
-    // this.getMarsWeather();
-
+    this.getNasaNewsFeed();
+    this.getRandomMathFunFact();
+    this.getRandomGeekJoke();
+    this.getEarthWeather();
+    this.getMarsWeather();
     this.getTimetracker();
   }
 
@@ -77,13 +76,15 @@ export class DashboardGrid extends LitElement {
           <card-content-quote slot="card-content" .quote="${this.randomGeekJoke}"></card-content-quote>
         </dashboard-card>
       </dashboard-col>
-    
     `;
   }
 
   firstUpdated() {
     super.firstUpdated();
     this.shadowRoot.querySelector('#form').addEventListener('updateTimetrackData', e => { this._updateTimetrackData(e, this) });
+    const allTimeItems = this.shadowRoot.querySelectorAll('.timetracker');
+    allTimeItems.forEach(time => console.log(time));
+    allTimeItems.forEach(time => time.addEventListener('deleteTimetrackData', e => { this._deleteTimetrackData(e, this) }));
   }
 
   async getNasaNewsFeed() {
@@ -217,13 +218,20 @@ export class DashboardGrid extends LitElement {
 
   _timetrackerMapper(entry) {
     return html`
-      <timetrack-card slot="col-content" .timeData="${entry}"></timetrack-card>
+      <timetrack-card class="timetracker" slot="col-content" .timeData="${entry}"></timetrack-card>
     `;
   }
 
   _updateTimetrackData(e, context) {
     const [...oldItems] = context.timetrackerData;
     context.timetrackerData = [...oldItems, e.detail];
+  }
+
+  _deleteTimetrackData(e, context) {
+    const id = context.timetrackerData.findIndex(x => x._id === 'e.detail._id');
+    console.log(id);
+    // const [...oldItems] = context.timetrackerData;
+    // context.timetrackerData = [...oldItems, e.detail];
   }
 
   _showTechnicalError(e) {

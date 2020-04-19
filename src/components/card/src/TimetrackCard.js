@@ -5,7 +5,10 @@ import 'weightless/card/card.js';
 import 'weightless/expansion/expansion.js';
 import 'weightless/icon/icon.js';
 import 'weightless/checkbox/checkbox.js';
+import 'weightless/button/button.js';
+
 import services from '../../../services/services.js'
+
 import { white, black, highlight } from '../../syle/color.js';
 import { spacer8, spacer4, spacer16, spacer12, spacer2 } from '../../syle/spacing.js';
 import { h2Style, highlightedSpan } from '../../syle/fonts.js'
@@ -94,13 +97,38 @@ export class TimetrackCard extends LitElement {
             <span slot="title">${this.timeData.title}</span>
             <span slot="description">//${this.timeData.description}</span>
             <div>
-              <wl-checkbox .checked="${this.timeData.state === 1 ? true : false}" @change="${e => services.patchTimetrackerEntry(e.detail, this.timeData._id)}"></wl-checkbox>
+              <wl-checkbox .checked="${this.timeData.state === 1 ? true : false}" @change="${e => this.patchTimetrackerEntry(e.detail, this.timeData._id)}"></wl-checkbox>
               <p>${this.timeData.longDescription}</p>
             </div>
+            <!-- <wl-button fab @click="${() => this.deleteTimetrackById(this.timeData._id)}">
+              <wl-icon>delete_forever</wl-icon>
+            </wl-button> -->
             <slot name="card-content"></slot>
           </wl-expansion>
         `}
       </wl-card>
-    `}
+  `}
+
+  async deleteTimetrackById(id) {
+    await new Promise((resolve) => {
+      resolve(services.deleteTimetrackById(id));
+    }).then((response) => {
+      const event = new CustomEvent('deleteTimetrackData', {
+        bubbles: true,
+        detail: this.timeData,
+      });
+      this.dispatchEvent(event);
+    }).catch((e) => {
+      console.log(e);
+    });
+  }
+
+  async patchTimetrackerEntry(detail, id) {
+     await new Promise((resolve) => {
+      resolve(services.patchTimetrackerEntry(detail, id));
+    }).catch((e) => {
+      console.log(e);
+    });
+  }
 }
 

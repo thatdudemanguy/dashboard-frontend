@@ -34,6 +34,20 @@ const fetcher = {
     });
     return response.json();
   },
+  delete: async (url = '') => {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    });
+    return response.json();
+  },
 }
 
 export default fetcher;
