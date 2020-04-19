@@ -60,15 +60,16 @@ export class TimetrackCard extends LitElement {
         margin-top: unset;
         margin-bottom: unset;
         --expansion-color: black;
+        --expansion-header-description-color: ${highlight};
         font-size: 0.8em;
-        --checkbox-size: 12px;
       }
-
+      
       wl-expansion div {
         display: flex;
       }
-
+      
       div wl-checkbox {
+        --checkbox-size: 12px;
         align-self: center;
         margin: ${spacer4};
         margin-left: unset;
@@ -93,7 +94,7 @@ export class TimetrackCard extends LitElement {
             <span slot="title">${this.timeData.title}</span>
             <span slot="description">//${this.timeData.description}</span>
             <div>
-              <wl-checkbox .checked="${!!this.timeData.state}" @change="${e => services.patchTimetrackerEntry(e.detail, this.timeData._id)}"></wl-checkbox>
+              <wl-checkbox .checked="${this.timeData.state === 1 ? true : false}" @change="${e => services.patchTimetrackerEntry(e.detail, this.timeData._id)}"></wl-checkbox>
               <p>${this.timeData.longDescription}</p>
             </div>
             <slot name="card-content"></slot>

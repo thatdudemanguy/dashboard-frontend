@@ -77,7 +77,7 @@ export class DashboardGrid extends LitElement {
           <card-content-quote slot="card-content" .quote="${this.randomGeekJoke}"></card-content-quote>
         </dashboard-card>
       </dashboard-col>
-      
+    
     `;
   }
 
@@ -222,11 +222,8 @@ export class DashboardGrid extends LitElement {
   }
 
   _updateTimetrackData(e, context) {
-    console.log(context);
     const [...oldItems] = context.timetrackerData;
     context.timetrackerData = [...oldItems, e.detail];
-
-    console.log(context.timetrackerData);
   }
 
   _showTechnicalError(e) {

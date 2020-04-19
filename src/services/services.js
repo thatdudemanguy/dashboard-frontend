@@ -87,7 +87,6 @@ async function getTimetracker() {
 async function postTimetracker(givenData) {
   const data = {
     ...givenData,
-    state: 1,
     duration: 1000,
     date: new Date(),
     tag: null,
