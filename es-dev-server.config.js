@@ -1,7 +1,7 @@
 const proxy = require('koa-proxies');
 
 module.exports = {
-    port: 8081,
+    port: 8080,
     watch: true,
     nodeResolve: true,
     appIndex: 'demo/index.html',
