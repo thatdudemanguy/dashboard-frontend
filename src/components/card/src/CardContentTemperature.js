@@ -49,10 +49,16 @@ export class CardContentTemp extends LitElement {
       </div>
 
       <p class="hws_av">${this.weatherData.HWS.av}m/s</p>
-      <div class="data_sub">
-        <p>min: ${this.weatherData.HWS.mn}m/s</p>
-        <p>max: ${this.weatherData.HWS.mx.toFixed(2)}m/s</p>
-      </div>
+
+      ${this.weatherData.HWS.mn ?
+        html`
+          <div class="data_sub">
+          <p>min: ${this.weatherData.HWS.mn}m/s</p>
+          <p>max: ${this.weatherData.HWS.mx.toFixed(2)}m/s</p>
+          </div>
+        `
+        : ''
+      }
 
       <p class="compass_point">${this.weatherData.WD.most_common.compass_point}</p>
       <img src="../../../images/arrow.png" style="transform: rotate(${this.weatherData.WD.most_common.compass_degrees}deg)"/>

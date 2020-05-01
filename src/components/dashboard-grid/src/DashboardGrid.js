@@ -64,6 +64,9 @@ export class DashboardGrid extends LitElement {
         <dashboard-card slot="col-content" .title="Weather on Mars, sol ${this.marsWeatherData.lastSOL} (UTC: ${this.marsWeatherData.First_UTC.substring(0, 10)})" .isError="${this.weatherOnMarsError}" .isLoading="${!this.marsWeatherData}">
           <card-content-temperature slot="card-content" .weatherData=${this.marsWeatherData}></card-content-temperature>
         </dashboard-card>
+        <dashboard-card slot="col-content" .title="Weather in ${this.earthWeatherData.name}" .isError="${this.earthWeatherError}" .isLoading="${!this.earthWeatherData}">
+          <card-content-temperature slot="card-content" .weatherData=${this.earthWeatherData}></card-content-temperature>
+        </dashboard-card>
       </dashboard-col>
       <dashboard-col>
         ${this.newsFeedFromNasaData.map(this._newsArticleMapper)}
@@ -83,7 +86,6 @@ export class DashboardGrid extends LitElement {
     super.firstUpdated();
     this.shadowRoot.querySelector('#form').addEventListener('updateTimetrackData', e => { this._updateTimetrackData(e, this) });
     const allTimeItems = this.shadowRoot.querySelectorAll('.timetracker');
-    allTimeItems.forEach(time => console.log(time));
     allTimeItems.forEach(time => time.addEventListener('deleteTimetrackData', e => { this._deleteTimetrackData(e, this) }));
   }
 
@@ -179,7 +181,23 @@ export class DashboardGrid extends LitElement {
       throw new Error('bad data from Earth weather');
     }
 
-    this.earthWeatherData = response;
+    this.earthWeatherData = {
+      'AT': {
+        'av': response.main.temp,
+        'mn': response.main.temp_min,
+        'mx': response.main.temp_max,
+      }, 
+      'name': response.name,
+      'HWS': {
+        'av': response.wind.speed,
+      },
+      'WD': {
+        'most_common': {
+          compass_point: '',
+          compass_degrees: response.wind.deg,
+        },
+      }
+    };
   }
 
   _handleMarsWeather(response) {
