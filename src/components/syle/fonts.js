@@ -10,6 +10,15 @@ export const h2Style = css`
   }
 `;
 
+export const h3Style = css`
+  h3 {
+    padding: 0px;
+    margin: 0px;
+    font-size: 0.65em;
+    color: ${highlight};
+  }
+`;
+
 export const pStyle = css`
   p {
     padding: ${spacer4} 0;
