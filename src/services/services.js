@@ -1,5 +1,20 @@
 import fetcher from './service-fetcher.js';
-const PREFIX = 'api/v1/'
+import { ajax } from '@lion/ajax';
+const PREFIX = '/api/v1/'
+
+// /**
+//  * Get news feed by added question
+//  * @param question word containing the subject e.g.: nasa
+//  * @returns {Promise<Object[]>}
+//  */
+// async function getNewsFeedByQuestion(question) {
+//   try {
+//     const response = await fetcher.get(`${PREFIX}news/${question}`);
+//     return response;
+//   } catch (e) {
+//     throw new Error(`Unable to get news feed: ${e.message}`);
+//   }
+// }
 
 /**
  * Get news feed by added question
@@ -8,8 +23,8 @@ const PREFIX = 'api/v1/'
  */
 async function getNewsFeedByQuestion(question) {
   try {
-    const response = await fetcher.get(`${PREFIX}news/${question}`);
-    return response.json();
+    const response = await ajax.get(`${PREFIX}news/${question}`);
+    return response.data;
   } catch (e) {
     throw new Error(`Unable to get news feed: ${e.message}`);
   }
@@ -21,8 +36,8 @@ async function getNewsFeedByQuestion(question) {
  */
 async function getRandomMathFunFact() {
   try {
-    const response = await fetcher.get(`${PREFIX}fact/`);
-    return response.text();
+    const response = await ajax.get(`${PREFIX}fact/`);
+    return response.data;
   } catch (e) {
     throw new Error(`Unable to fun math fact: ${e.message}`);
   }
@@ -34,8 +49,8 @@ async function getRandomMathFunFact() {
  */
 async function getGeekJoke() {
   try {
-    const response = await fetcher.get(`${PREFIX}joke/`);
-    return response.json();
+    const response = await ajax.get(`${PREFIX}joke/`);
+    return response.data;
   } catch (e) {
     throw new Error(`Unable to get geek joke: ${e.message}`);
   }
@@ -47,8 +62,8 @@ async function getGeekJoke() {
  */
 async function getEarthWeather() {
   try {
-    const response = await fetcher.get(`${PREFIX}weather/`);
-    return response.json();
+    const response = await ajax.get(`${PREFIX}weather/`);
+    return response.data;
   } catch (e) {
     throw new Error(`Unable to get weather on Earth: ${e.message}`);
   }
@@ -60,8 +75,8 @@ async function getEarthWeather() {
  */
 async function getMarsWeather() {
   try {
-    const response = await fetcher.get(`${PREFIX}nasa/`);
-    return response.json();
+    const response = await ajax.get(`${PREFIX}nasa/`);    
+    return response.data;
   } catch (e) {
     throw new Error(`Unable to get weather on Mars: ${e.message}`);
   }
@@ -73,8 +88,8 @@ async function getMarsWeather() {
  */
 async function getTimetracker() {
   try {
-    const response = await fetcher.get(`${PREFIX}timetracker/`);
-    return response.json();
+    const response = await ajax.get(`${PREFIX}timetracker/`);
+    return response.data;
   } catch (e) {
     throw new Error(`Unable to get timetracker data: ${e.message}`);
   }
@@ -95,8 +110,8 @@ async function postTimetracker(givenData) {
   // TODO: add other inputs
 
   try {
-    const response = await fetcher.post(`${PREFIX}timetracker/`, data);
-    return response;
+    const response = await ajax.post(`${PREFIX}timetracker/`, data);
+    return response.data;
   } catch (e) {
     throw new Error(`Unable to post: ${e.message}`);
   }
@@ -111,7 +126,8 @@ async function patchTimetrackerEntry(state, id) {
     const obj = {
       state: state ? 1 : 0,
     };
-    const response = await fetcher.patch(`${PREFIX}timetracker/${id}`, obj);
+    const response = await ajax.patch(`${PREFIX}timetracker/${id}`, obj);
+    return response;
   } catch (e) {
     throw new Error(`Unable to patch: ${e.message}`)
   }
@@ -123,7 +139,7 @@ async function patchTimetrackerEntry(state, id) {
 */
 async function deleteTimetrackById(id) {
   try {
-    const response = await fetcher.delete(`${PREFIX}timetracker/${id}`);
+    const response = await ajax.delete(`${PREFIX}timetracker/${id}`);
   } catch (e) {
     throw new Error(`Unable to delete: ${e.message}`)
   }

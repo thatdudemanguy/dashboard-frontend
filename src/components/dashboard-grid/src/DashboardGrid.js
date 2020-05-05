@@ -41,6 +41,7 @@ export class DashboardGrid extends LitElement {
     this.newsFeedFromNasaData = [];
     this.marsWeatherData = { First_UTC: '' };
     this.earthWeatherData = { name: '' };
+    this.timetrackerData = [];
   }
 
   connectedCallback() {

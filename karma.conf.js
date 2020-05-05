@@ -13,10 +13,21 @@ module.exports = config => {
         // npm run test -- --grep test/bar/*
         { pattern: config.grep ? config.grep : 'test/**/*.test.js', type: 'module' },
       ],
+      plugins: [
+        // load plugin
+        require.resolve('@open-wc/karma-esm'),
+
+        // fallback: resolve any karma- plugins
+        'karma-*',
+      ],
+
+      frameworks: ['esm'],
 
       esm: {
+        // if you are using 'bare module imports' you will need this option
         nodeResolve: true,
       },
+
       // you can overwrite/extend the config further
     }),
   );
