@@ -12,7 +12,8 @@
     "storybook:build": "build-storybook",
     "start:build": "es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
     "build": "rimraf dist && rollup -c rollup.config.js",
-    "start": "es-dev-server --app-index index.html --node-resolve --open --watch"
+    "start": "es-dev-server --app-index index.html --node-resolve --open --watch",
+    "prepush": "npm run test"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^0.21.0",
@@ -44,7 +45,8 @@
   "prettier": "@open-wc/prettier-config",
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "prepush": "prepush"
     }
   },
   "lint-staged": {
