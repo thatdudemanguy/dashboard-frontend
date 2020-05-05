@@ -27,7 +27,17 @@ module.exports = config => {
         // if you are using 'bare module imports' you will need this option
         nodeResolve: true,
       },
-
+      coverageIstanbulReporter: {
+        dir: 'coverage',
+        thresholds: {
+          global: {
+            statements: 50,
+            branches: 50,
+            functions: 50,
+            lines: 50,
+          },
+        },
+      },
       // you can overwrite/extend the config further
     }),
   );
