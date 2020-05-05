@@ -36,10 +36,10 @@ async function getNewsFeedByQuestion(question) {
  */
 async function getRandomMathFunFact() {
   try {
-    const response = await ajax.get(`${PREFIX}fact/`);
+    const response = await ajax.get(`${PREFIX}fact/`);    
     return response.data;
   } catch (e) {
-    throw new Error(`Unable to fun math fact: ${e.message}`);
+    throw new Error(`Unable to get math fact: ${e.message}`);
   }
 }
 
