@@ -173,7 +173,6 @@ export class DashboardGrid extends LitElement {
       this.randomGeekJokeError = true;
       throw new Error('bad data from geek jokes');
     }
-
     this.randomGeekJoke = response;
   }
 

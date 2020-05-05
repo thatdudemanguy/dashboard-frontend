@@ -45,8 +45,8 @@ describe('DashboardGrid', () => {
     });
 
     it('_handleGeekJoke || 200 success', () => {
-      element._handleGeekJoke('foobar');
-      expect(element.randomGeekJoke).to.equal('foobar');
+      element._handleGeekJoke(MockDataMixin.getMockDataGeekJoke);
+      expect(element.randomGeekJoke).to.equal(MockDataMixin.getMockDataGeekJoke);
     });
   });
 });
