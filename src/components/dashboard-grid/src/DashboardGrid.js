@@ -142,10 +142,14 @@ export class DashboardGrid extends LitElement {
   }
 
   async getTimetracker() {
+
+
+
+
     await new Promise((resolve) => {
       resolve(services.getTimetracker());
     }).then((response) => {
-      this._handleTimetracker(response);
+      this._handleTimetrackerData(response);
     }).catch((e) => {
       this._showTechnicalError(e);
     });
@@ -187,7 +191,7 @@ export class DashboardGrid extends LitElement {
         'av': response.main.temp,
         'mn': response.main.temp_min,
         'mx': response.main.temp_max,
-      }, 
+      },
       'name': response.name,
       'HWS': {
         'av': response.wind.speed,
@@ -211,11 +215,12 @@ export class DashboardGrid extends LitElement {
     this.marsWeatherData.lastSOL = lastSOL;
   }
 
-  _handleTimetracker(response) {
+  _handleTimetrackerData(response) {
     if (!response) {
       this.timetrackerError = true;
       throw new Error('bad data from time tracker');
     }
+
     this.timetrackerData = response;
   }
 
@@ -228,7 +233,7 @@ export class DashboardGrid extends LitElement {
 
   _newsArticleMapper(article) {
     return html`
-      <dashboard-card slot="col-content" .title="${article.title}" .author="${article.author}" 
+      <dashboard-card slot="col-content" .title="${article.title}" .author="${article.author}"
         .imageSource="${article.urlToImage}" .linkSource="${article.url}">
         <card-content-news-article slot="card-content" .newsFeedData="${article}"/>
       </dashboard-card>

@@ -1,20 +1,6 @@
-import fetcher from './service-fetcher.js';
 import { ajax } from '@lion/ajax';
-const PREFIX = '/api/v1/'
 
-// /**
-//  * Get news feed by added question
-//  * @param question word containing the subject e.g.: nasa
-//  * @returns {Promise<Object[]>}
-//  */
-// async function getNewsFeedByQuestion(question) {
-//   try {
-//     const response = await fetcher.get(`${PREFIX}news/${question}`);
-//     return response;
-//   } catch (e) {
-//     throw new Error(`Unable to get news feed: ${e.message}`);
-//   }
-// }
+const PREFIX = '/api/v1/'
 
 /**
  * Get news feed by added question
@@ -36,7 +22,7 @@ async function getNewsFeedByQuestion(question) {
  */
 async function getRandomMathFunFact() {
   try {
-    const response = await ajax.get(`${PREFIX}fact/`);    
+    const response = await ajax.get(`${PREFIX}fact/`);
     return response.data;
   } catch (e) {
     throw new Error(`Unable to get math fact: ${e.message}`);
@@ -75,7 +61,7 @@ async function getEarthWeather() {
  */
 async function getMarsWeather() {
   try {
-    const response = await ajax.get(`${PREFIX}nasa/`);    
+    const response = await ajax.get(`${PREFIX}nasa/`);
     return response.data;
   } catch (e) {
     throw new Error(`Unable to get weather on Mars: ${e.message}`);
@@ -106,7 +92,7 @@ async function postTimetracker(givenData) {
     date: new Date(),
     tag: null,
   }
-  
+
   // TODO: add other inputs
 
   try {
